@@ -1,0 +1,32 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Tarea";
+}
+
+<br>
+<center>
+    <h2>Lista de Articulos</h2>
+</center>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>     
+            <th>Precio</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.listaClientes)
+        {
+            <tr>
+                <td>@item.id</td>
+                <td>@item.Nombre</td>
+                <td>@item.Precio</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<center>
+<a class="btn btn-primary btn-sm" href="/Clientes/Create">Nuevo cliente</a> 
+</center>
