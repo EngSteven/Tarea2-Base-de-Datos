@@ -1,0 +1,92 @@
+﻿@page
+@model WebApplication2.Pages.Clientes.CreateModel
+@{
+}
+
+<br />
+<center>
+    <h2>Modificar Articulo</h2>
+</center>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form method="POST">
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Codigo</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="Nombre" value="@Model.clienteInfo.Nombre" />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Nombre</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="Nombre" value="@Model.clienteInfo.Nombre" />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Clase</label>
+        <div class="col-sm-6">
+            <select id="opciones" size="1" style=" width: 637px; height: 39px;">
+                <option value="opcion1">Opción 1</option>
+                <option value="opcion2">Opción 2</option>
+                <option value="opcion3">Opción 3</option>
+                <option value="opcion4">Opción 4</option>
+                <option value="opcion5">Opción 5</option>
+                <option value="opcion6">Opción 6</option>
+                <option value="opcion7">Opción 7</option>
+                <option value="opcion8">Opción 8</option>
+                <option value="opcion9">Opción 9</option>
+                <option value="opcion10">Opción 10</option>
+                <option value="opcion11">Opción 11</option>
+                <option value="opcion12">Opción 12</option>
+                <option value="opcion13">Opción 13</option>
+                <option value="opcion14">Opción 14</option>
+                <option value="opcion15">Opción 15</option>
+                <option value="opcion16">Opción 16</option>
+                <option value="opcion17">Opción 17</option>
+                <option value="opcion18">Opción 18</option>
+                <option value="opcion19">Opción 19</option>
+                <option value="opcion20">Opción 20</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Precio</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="Nombre" value="@Model.clienteInfo.Nombre" />
+        </div>
+    </div>
+
+
+    @if (Model.successMessage.Length > 0)
+    {
+        <div class="row mb-3">
+            <div class="col-sm-9">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>@Model.successMessage</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    }
+
+
+    <div class="row mb-3">
+        <div class="offset-sm-3 col-sm d-grid">
+            <button type="submit" class="btn-primary">OK</button>
+        </div>
+        <div class="col-sm-3 d-grid">
+            <a class="btn btn-outline-primary" href="/Index" role="button">Cancel</a>
+        </div>
+    </div>
+
+</form>
