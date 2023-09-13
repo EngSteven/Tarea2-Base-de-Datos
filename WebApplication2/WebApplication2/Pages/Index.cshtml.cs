@@ -17,52 +17,50 @@ namespace WebApplication2.Pages
             _logger = logger;
         }
 
-        public List<ClienteInfo> listaArticulos = new List<ClienteInfo>();
+        public List<UsuarioInfo> listaArticulos = new List<UsuarioInfo>();
+        public UsuarioInfo usuarioInfo = new UsuarioInfo();
+        public String successMessage = "";
 
         public void OnGet()
         {
+
+        }
+        public void OnPost()
+        {
+            usuarioInfo.Usuario = Request.Form["Usuario"];
+            usuarioInfo.Clave = Request.Form["Clave"];
+
             try
             {
+                Console.WriteLine("Exception: No Funciono" + usuarioInfo.Clave.ToString() + usuarioInfo.Usuario.ToString());
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();                                      //Se abre la coneccion con la BD.
-                    using (SqlCommand command = new SqlCommand("dbo.ListaDeArticulos2", connection))
+                    using (SqlCommand command = new SqlCommand("dbo.BuscarUsuario", connection))
                     {
-                        //Variables para obtener el DataSet mandados de la BD.
-                        SqlDataAdapter adapter = new SqlDataAdapter();
-                        DataTable table = new DataTable();
+                        command.CommandType = CommandType.StoredProcedure;
 
-                        command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
-                                                                            //Codigo para que detecte el output del SP.
+                        command.Parameters.AddWithValue("@inUsuario", usuarioInfo.Usuario);
+                        command.Parameters.AddWithValue("@inClave", usuarioInfo.Clave);
+
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
 
-                        //Porceso de obtener el DataSet.
-                        adapter.SelectCommand = command;
-                        DataSet dataSet = new DataSet();
-                        adapter.Fill(dataSet);
+                        command.ExecuteNonQuery();
 
-                        //Si el output de errores por DataSet es 0 (No hay problemas).
-                        if (dataSet.Tables[0].Rows[0][0].ToString().Equals("0"))
+                        int resultCode = (int)command.Parameters["@outResultCode"].Value;
+
+                        if (resultCode == 50001) //codigo generado en el SP que dice si ya un nombre del articulo existe o no
                         {
-                            foreach (DataRow row in dataSet.Tables[1].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
-                            {
-                                ClienteInfo clienteInfo = new ClienteInfo();
-                                clienteInfo.id = "" + row[0];
-                                clienteInfo.Nombre = "" + row[1];
-                                clienteInfo.Precio = "" + SqlMoney.Parse(row[2].ToString());
-
-                                listaArticulos.Add(clienteInfo);             //Añadir cada fila al array para su visualizacion.
-                            }
+                            errorMessage = "Usuario no encontrado";
+                            return;
                         }
                         else
                         {
-                            //En caso de que haya algun error al cargar la tabla de articulos.
-                            errorMessage = "Error al cargar la lista de articulos.";
-                            return;
+                            Response.Redirect("/Pricipal");
                         }
                     }
                 }
@@ -71,12 +69,12 @@ namespace WebApplication2.Pages
             {
                 Console.WriteLine("Exception: " + ex.ToString());
             }
+
         }
     }
-    public class ClienteInfo                                                //Clase que equivaldra a las filas de la tabla para si manipulacion.
+    public class UsuarioInfo                                                //Clase que equivaldra a las filas de la tabla para si manipulacion.
     {
-        public String id;
-        public String Nombre;
-        public String Precio;
+        public String Usuario;
+        public String Clave;
     }
 }
