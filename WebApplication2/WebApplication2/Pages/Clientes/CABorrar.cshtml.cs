@@ -1,15 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Data;
 using System.Data.SqlClient;
-using System.Data.SqlTypes;
-using System.Xml.Linq;
+using System.Data;
 
 namespace WebApplication2.Pages.Clientes
 {
-    public class CAModificarModel : PageModel
+    public class CABorrarModel : PageModel
     {
-
         public ArticuloInfo articuloInfo = new ArticuloInfo();
         public String errorMessage = "";
         public String successMessage = "";
@@ -74,7 +71,7 @@ namespace WebApplication2.Pages.Clientes
             }
             //successMessage = "Nuevo articulo añadido correctamente.";
             TempData["CodigoIngresado"] = articuloInfo.Codigo;
-            Response.Redirect("/Cliente/Modificar");
+            Response.Redirect("/Clientes/Borrar");
 
         }
     }

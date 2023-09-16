@@ -1,11 +1,11 @@
 ﻿@page
-@model WebApplication2.Pages.Clientes.ModificarModel
+@model WebApplication2.Pages.Clientes.InsertarModel
 @{
 }
 
 <br />
 <center>
-    <h2>Modificar Articulo</h2>
+    <h2>Insertar Nuevo Articulo</h2>
 </center>
 
 @if (Model.errorMessage.Length > 0)
@@ -17,7 +17,6 @@
 }
 
 <form method="POST">
-
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Codigo</label>
         <div class="col-sm-6">
@@ -32,20 +31,17 @@
         </div>
     </div>
 
-
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Clase</label>
         <div class="col-sm-6">
-            <select id="opciones" size="1" style=" width: 637px; height: 39px;">
-                <option>@Model.articulo.Clase</option>
+            <select name="ClaseSeleccionada" size="1" style="width: 637px; height: 39px;">
                 @foreach (var item in Model.listaClaseArticulos)
                 {
-                    <option value=>@item.Nombre</option>
+                    <option value="@item.Nombre">@item.Nombre</option>
                 }
             </select>
         </div>
     </div>
-
 
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Precio</label>
@@ -53,7 +49,6 @@
             <input type="text" class="form-control" name="Precio" value="@Model.articulo.Precio" />
         </div>
     </div>
-
 
 
     @if (Model.successMessage.Length > 0)
@@ -73,6 +68,7 @@
         <div class="offset-sm-3 col-sm d-grid">
             <button type="submit" class="btn-primary">OK</button>
         </div>
+
         <div class="col-sm-3 d-grid">
             <a class="btn btn-outline-primary" href="/Index" role="button">Cancel</a>
         </div>

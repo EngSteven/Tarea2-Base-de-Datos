@@ -16,28 +16,28 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\yei-1\Dropbox\PC\Desktop\College\Semestre 4\BasesDatos1\Tareas\Tarea2\WebApplication2\WebApplication2
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Cliente/Borrar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZVxCb3JyYXIuY3NodG1s
+[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Clientes/Borrar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZXNcQm9ycmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Cliente/CABorrar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZVxDQUJvcnJhci5jc2h0bWw=
+[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Clientes/CABorrar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZXNcQ0FCb3JyYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Cliente/CAModificar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZVxDQU1vZGlmaWNhci5jc2h0bWw=
+[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Clientes/CAModificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZXNcQ0FNb2RpZmljYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Cliente/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZVxDcmVhdGUuY3NodG1s
+[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Clientes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZXNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Cliente/Insertar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZVxJbnNlcnRhci5jc2h0bWw=
+[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Clientes/Insertar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZXNcSW5zZXJ0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Cliente/Modificar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZVxNb2RpZmljYXIuY3NodG1s
+[C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Clientes/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZXNcTW9kaWZpY2FyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/yei-1/Dropbox/PC/Desktop/College/Semestre 4/BasesDatos1/Tareas/Tarea2/WebApplication2/WebApplication2/Pages/Error.cshtml]
