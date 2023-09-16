@@ -16,7 +16,7 @@ namespace WebApplication2.Pages.Clientes
         public String successMessage = "";
         public ArticuloInfo articulo = new ArticuloInfo();
         public int idArticulo = 0;
-
+        public String clase = "";
 
         public void OnGet()
         {
@@ -128,7 +128,9 @@ namespace WebApplication2.Pages.Clientes
             articulo.Codigo = Request.Form["Codigo"];
             articulo.Nombre = Request.Form["Nombre"];
             articulo.Clase = Request.Form["ClaseSeleccionada"];
+            clase = Request.Form["ClaseSeleccionada"];
             articulo.Precio = Request.Form["Precio"];
+            Console.WriteLine("Lo que sea " + clase);
 
             if (articulo.Codigo.Length == 0 || articulo.Nombre.Length == 0 || articulo.Clase.Length == 0 || articulo.Precio.Length == 0)
             {

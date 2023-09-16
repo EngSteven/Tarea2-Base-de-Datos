@@ -64,7 +64,7 @@ namespace WebApplication2.Pages
                                 articuloInfo.Clase = "" + row[2];
                                 articuloInfo.Precio = "" + SqlMoney.Parse(row[3].ToString());
 
-                                listaArticulos.Add(articuloInfo);             //A�adir cada fila al array para su visualizacion.
+                                listaArticulos.Add(articuloInfo);             //A adir cada fila al array para su visualizacion.
                             }
                             foreach (DataRow row in dataSet.Tables[2].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
                             {
@@ -135,7 +135,7 @@ namespace WebApplication2.Pages
                                 articuloInfo.Clase = "" + row[2];
                                 articuloInfo.Precio = "" + SqlMoney.Parse(row[3].ToString());
 
-                                listaArticulos.Add(articuloInfo);             //A�adir cada fila al array para su visualizacion.
+                                listaArticulos.Add(articuloInfo);             //A adir cada fila al array para su visualizacion.
                             }
                             foreach (DataRow row in dataSet.Tables[2].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
                             {
@@ -205,7 +205,7 @@ namespace WebApplication2.Pages
                                 articuloInfo.Clase = "" + row[2];
                                 articuloInfo.Precio = "" + SqlMoney.Parse(row[3].ToString());
 
-                                listaArticulos.Add(articuloInfo);             //A�adir cada fila al array para su visualizacion.
+                                listaArticulos.Add(articuloInfo);             //A adir cada fila al array para su visualizacion.
                             }
                             foreach (DataRow row in dataSet.Tables[2].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
                             {
@@ -231,11 +231,14 @@ namespace WebApplication2.Pages
             }
 
         }
-        public void OnPost()
+        public void OnPostClase()
         {
             try
             {
-                clase = Request.Form["456"];
+                clase = Request.Form["ClaseSeleccionada"];
+                Console.WriteLine("Clase: " + clase);
+                
+
                 articulo1 = new ArticuloInfo();
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
 
@@ -275,7 +278,7 @@ namespace WebApplication2.Pages
                                 articuloInfo.Clase = "" + row[2];
                                 articuloInfo.Precio = "" + SqlMoney.Parse(row[3].ToString());
 
-                                listaArticulos.Add(articuloInfo);             //A�adir cada fila al array para su visualizacion.
+                                listaArticulos.Add(articuloInfo);             //A adir cada fila al array para su visualizacion.
                             }
                             foreach (DataRow row in dataSet.Tables[2].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
                             {

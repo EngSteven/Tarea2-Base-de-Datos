@@ -43,22 +43,24 @@
     </div>
 </form>
 
-<form method="post">
+
+<form asp-page-handler="Clase" method="post">
     <div class="col-sm-3">
-        <select name="1234" size="1" style=" width: 637px; height: 39px;">
+        <select name="ClaseSeleccionada" size="1" style="width: 637px; height: 39px;">
             @foreach (var item in Model.listaClaseArticulos1)
             {
-                <option value=>@item.Nombre</option>
+                <option value="@item.Nombre">@item.Nombre</option>
             }
         </select>
     </div>
-</form>
-<form asp-page-handler="Clase" method="post">
+
     <div class="row mb-3">
         <div class="offset-sm-6 col-sm d-grid">
             <button type="submit" class="btn-primary">Filtrar X Clase</button>
         </div>
     </div>
+
+    
 </form>
 
 <div class="row mb-3">
