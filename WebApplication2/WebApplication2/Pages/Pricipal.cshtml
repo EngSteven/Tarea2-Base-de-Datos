@@ -16,7 +16,6 @@
         <strong>@Model.errorMessage</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-
 }
 <form asp-page-handler="Nombre" method="post">
     <div class="row mb-3">
@@ -37,30 +36,38 @@
         </div>
 
         <div class="offset-sm-6 col-sm-3 d-grid">
-            <button class="btn btn-primary">Filtrar X Cantidad</button>
+            <button id="btnCant" class="btn btn-primary">Filtrar X Cantidad</button>
         </div>
+        @if (@Model.cantidad == "")
+        {
+            <button disabled="disabled" id="btnCant" class="btn btn-primary">Filtrar X Cantidad</button>
+        }
+        else
+        {
+            <button id="btnCant" class="btn btn-primary">Filtrar X Cantidad</button>
+        }
 
     </div>
 </form>
 
-
 <form asp-page-handler="Clase" method="post">
-    <div class="col-sm-3">
-        <select name="ClaseSeleccionada" size="1" style="width: 637px; height: 39px;">
-            @foreach (var item in Model.listaClaseArticulos1)
-            {
-                <option value="@item.Nombre">@item.Nombre</option>
-            }
-        </select>
-    </div>
+
 
     <div class="row mb-3">
+        <div class="col-sm-3">
+            <select name="ClaseSeleccionada" size="1" style="width: 637px; height: 39px;">
+                @foreach (var item in Model.listaClaseArticulos1)
+                {
+                    <option value="@item.Nombre">@item.Nombre</option>
+                }
+            </select>
+        </div>
         <div class="offset-sm-6 col-sm d-grid">
             <button type="submit" class="btn-primary">Filtrar X Clase</button>
         </div>
     </div>
 
-    
+
 </form>
 
 <div class="row mb-3">

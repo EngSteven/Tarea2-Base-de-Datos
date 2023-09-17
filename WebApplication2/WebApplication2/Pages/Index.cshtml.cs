@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Net;
 using WebApplication2.Pages.Clientes;
 
 namespace WebApplication2.Pages
@@ -23,13 +24,25 @@ namespace WebApplication2.Pages
 
         public void OnGet()
         {
-
+            Response.Redirect("/Pricipal");
         }
         public void OnPost()
         {
+            //Response.Redirect("/Pricipal");
+            //return;
+            IPHostEntry host;
+            String localIP = "";
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            localIP = host.AddressList[0].ToString();
             usuarioInfo.Usuario = Request.Form["Usuario"];
             usuarioInfo.Clave = Request.Form["Clave"];
 
+
+            if (usuarioInfo.Usuario.Equals("") || usuarioInfo.Clave.Equals(""))
+            {
+                errorMessage = "Ambos campos deben ser rellenados.";
+                return;
+            }
             try
             {
                 Console.WriteLine("Exception: No Funciono" + usuarioInfo.Clave.ToString() + usuarioInfo.Usuario.ToString());
@@ -44,6 +57,7 @@ namespace WebApplication2.Pages
 
                         command.Parameters.AddWithValue("@inUsuario", usuarioInfo.Usuario);
                         command.Parameters.AddWithValue("@inClave", usuarioInfo.Clave);
+                        command.Parameters.AddWithValue("@inIP", localIP);
 
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
@@ -55,7 +69,7 @@ namespace WebApplication2.Pages
 
                         if (resultCode == 50001) //codigo generado en el SP que dice si ya un nombre del articulo existe o no
                         {
-                            errorMessage = "Usuario no encontrado";
+                            errorMessage = "Combinacion Usuario/Contrase�a no encontrado.";
                             return;
                         }
                         else

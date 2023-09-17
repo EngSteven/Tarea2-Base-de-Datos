@@ -9,6 +9,7 @@ namespace WebApplication2.Pages.Clientes
     public class BorrarModel : PageModel
     {
         public String codigoIngresado = "";
+        public String codigoBorrar = "";
         public String errorMessage = "";                                    //Variable para los mensajes de error
         public String successMessage = "";
         public ArticuloInfo articulo = new ArticuloInfo();
@@ -32,6 +33,7 @@ namespace WebApplication2.Pages.Clientes
                         //Variables para obtener el DataSet mandados de la BD.
                         SqlDataAdapter adapter = new SqlDataAdapter();
                         DataTable table = new DataTable();
+
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                         command.Parameters.AddWithValue("@inCodigo", codigoIngresado);
@@ -65,6 +67,60 @@ namespace WebApplication2.Pages.Clientes
                         {
                             //En caso de que haya algun error al cargar la tabla de articulos.
                             errorMessage = "Error al cargar la lista de articulos.";
+                            return;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.ToString());
+            }
+        }
+
+        public void OnPost()
+        {
+            try
+            {
+                codigoBorrar = Request.Form["Codigo1"];
+                String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();                                      //Se abre la coneccion con la BD.
+
+                    String SPNombre = "dbo.BorradoLogico";
+
+                    using (SqlCommand command = new SqlCommand(SPNombre, connection))
+                    {
+                        //Variables para obtener el DataSet mandados de la BD.
+                        SqlDataAdapter adapter = new SqlDataAdapter();
+                        DataTable table = new DataTable();
+
+                        Console.WriteLine(codigoBorrar + "--");
+                        command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
+                        command.Parameters.AddWithValue("@inCodigo", codigoBorrar);
+
+                        //Codigo para que detecte el output del SP.
+                        SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
+                        resultCodeParam.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(resultCodeParam);
+                        command.ExecuteNonQuery();
+
+
+                        int resultCode = (int)command.Parameters["@outResultCode"].Value;
+
+                        if (resultCode != 50001)
+                        {
+
+                            Console.WriteLine("Borrado adecuado");
+                            successMessage = "Borrado correctamente";
+
+                        }
+                        else
+                        {
+                            //En caso de que haya algun error al cargar la tabla de articulos.
+                            errorMessage = "Error al borrar el articulo.";
                             return;
                         }
                     }

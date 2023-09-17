@@ -13,6 +13,7 @@ namespace WebApplication2.Pages
         public String nombre = "";
         public String clase = "";
         public String errorMessage = "";      //Variable para los mensajes de error
+        public String spName = "";
         private readonly ILogger<IndexModel> _logger;
         public List<ClaseArticulo> listaClaseArticulos1 = new List<ClaseArticulo>();
         public ArticuloInfo articulo1 = new ArticuloInfo();
@@ -30,11 +31,11 @@ namespace WebApplication2.Pages
             try
             {
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
-
+                spName = "dbo.ListaArticulos";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();                                      //Se abre la coneccion con la BD.
-                    using (SqlCommand command = new SqlCommand("dbo.ListaArticulos", connection))
+                    using (SqlCommand command = new SqlCommand(spName, connection))
                     //using (SqlCommand command = new SqlCommand("dbo.FiltrarCantidad", connection))
                     {
                         //Variables para obtener el DataSet mandados de la BD.
@@ -64,7 +65,7 @@ namespace WebApplication2.Pages
                                 articuloInfo.Clase = "" + row[2];
                                 articuloInfo.Precio = "" + SqlMoney.Parse(row[3].ToString());
 
-                                listaArticulos.Add(articuloInfo);             //A adir cada fila al array para su visualizacion.
+                                listaArticulos.Add(articuloInfo);             //A�adir cada fila al array para su visualizacion.
                             }
                             foreach (DataRow row in dataSet.Tables[2].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
                             {
@@ -97,12 +98,20 @@ namespace WebApplication2.Pages
             {
                 cantidad = Request.Form["Cantidad"];
                 articulo1 = new ArticuloInfo();
-                String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
+                if (cantidad.All(c => (c >= '0' && c <= '9')) && cantidad != "")
+                {
+                    spName = "dbo.FiltrarCantidad";
+                }
+                else
+                {
+                    spName = "dbo.ListaArticulos";
+                }
 
+                String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();                                      //Se abre la coneccion con la BD.
-                    using (SqlCommand command = new SqlCommand("dbo.FiltrarCantidad", connection))
+                    using (SqlCommand command = new SqlCommand(spName, connection))
                     {
                         //Variables para obtener el DataSet mandados de la BD.
                         SqlDataAdapter adapter = new SqlDataAdapter();
@@ -110,8 +119,10 @@ namespace WebApplication2.Pages
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                                                                             //Codigo para que detecte el output del SP.
-                        Console.WriteLine(cantidad);
-                        command.Parameters.AddWithValue("@inCantidad", SqlInt16.Parse(cantidad));
+                        if (cantidad.All(c => (c >= '0' && c <= '9')) && cantidad != "")
+                        {
+                            command.Parameters.AddWithValue("@inCantidad", SqlInt16.Parse(cantidad));
+                        }
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
@@ -135,14 +146,13 @@ namespace WebApplication2.Pages
                                 articuloInfo.Clase = "" + row[2];
                                 articuloInfo.Precio = "" + SqlMoney.Parse(row[3].ToString());
 
-                                listaArticulos.Add(articuloInfo);             //A adir cada fila al array para su visualizacion.
+                                listaArticulos.Add(articuloInfo);             //A�adir cada fila al array para su visualizacion.
                             }
                             foreach (DataRow row in dataSet.Tables[2].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
                             {
                                 ClaseArticulo claseArticulo = new ClaseArticulo();
 
                                 claseArticulo.Nombre = "" + row[0];
-                                Console.WriteLine("Exception: ---" + claseArticulo.Nombre + "------");
                                 listaClaseArticulos1.Add(claseArticulo);             //A?adir cada fila al array para su visualizacion.
                             }
                         }
@@ -154,6 +164,7 @@ namespace WebApplication2.Pages
                         }
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -167,12 +178,20 @@ namespace WebApplication2.Pages
             {
                 nombre = Request.Form["Nombre"];
                 articulo1 = new ArticuloInfo();
+                if (nombre.Equals(""))
+                {
+                    spName = "dbo.ListaArticulos";
+                }
+                else
+                {
+                    spName = "dbo.FiltrarNombre";
+                }
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();                                      //Se abre la coneccion con la BD.
-                    using (SqlCommand command = new SqlCommand("dbo.FiltrarNombre", connection))
+                    using (SqlCommand command = new SqlCommand(spName, connection))
                     {
                         //Variables para obtener el DataSet mandados de la BD.
                         SqlDataAdapter adapter = new SqlDataAdapter();
@@ -180,8 +199,10 @@ namespace WebApplication2.Pages
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                                                                             //Codigo para que detecte el output del SP.
-                        Console.WriteLine(cantidad);
-                        command.Parameters.AddWithValue("@inNombre", nombre);
+                        if (!nombre.Equals(""))
+                        {
+                            command.Parameters.AddWithValue("@inNombre", nombre);
+                        }
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
@@ -205,14 +226,13 @@ namespace WebApplication2.Pages
                                 articuloInfo.Clase = "" + row[2];
                                 articuloInfo.Precio = "" + SqlMoney.Parse(row[3].ToString());
 
-                                listaArticulos.Add(articuloInfo);             //A adir cada fila al array para su visualizacion.
+                                listaArticulos.Add(articuloInfo);             //A�adir cada fila al array para su visualizacion.
                             }
                             foreach (DataRow row in dataSet.Tables[2].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
                             {
                                 ClaseArticulo claseArticulo = new ClaseArticulo();
 
                                 claseArticulo.Nombre = "" + row[0];
-                                Console.WriteLine("Exception: ---" + claseArticulo.Nombre + "------");
                                 listaClaseArticulos1.Add(claseArticulo);             //A?adir cada fila al array para su visualizacion.
                             }
                         }
@@ -236,8 +256,7 @@ namespace WebApplication2.Pages
             try
             {
                 clase = Request.Form["ClaseSeleccionada"];
-                Console.WriteLine("Clase: " + clase);
-                
+
 
                 articulo1 = new ArticuloInfo();
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
@@ -253,7 +272,6 @@ namespace WebApplication2.Pages
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                                                                             //Codigo para que detecte el output del SP.
-                        Console.WriteLine("-" + clase + "-");
                         command.Parameters.AddWithValue("@inClase", clase);
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
@@ -285,7 +303,6 @@ namespace WebApplication2.Pages
                                 ClaseArticulo claseArticulo = new ClaseArticulo();
 
                                 claseArticulo.Nombre = "" + row[0];
-                                Console.WriteLine("Exception: ---" + claseArticulo.Nombre + "------");
                                 listaClaseArticulos1.Add(claseArticulo);             //A?adir cada fila al array para su visualizacion.
                             }
                         }

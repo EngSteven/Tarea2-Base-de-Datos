@@ -23,6 +23,7 @@ namespace WebApplication2.Pages.Clientes
             try
             {
                 codigoIngresado = TempData["CodigoIngresado"] as string;
+                Console.WriteLine(codigoIngresado);
                 String SPNombre = "dbo.ListaClaseArticulos";
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
 
@@ -58,7 +59,6 @@ namespace WebApplication2.Pages.Clientes
 
                                 listaClaseArticulos.Add(claseArticulo);             //A?adir cada fila al array para su visualizacion.
                             }
-
                         }
                         else
                         {
@@ -93,6 +93,9 @@ namespace WebApplication2.Pages.Clientes
                         DataSet dataSet = new DataSet();
                         adapter.Fill(dataSet);
 
+                        int resultCode = (int)command.Parameters["@outResultCode"].Value;
+                        Console.WriteLine(resultCode);
+
                         //Si el output de errores por DataSet es 0 (No hay problemas).
                         if (dataSet.Tables[0].Rows[0][0].ToString().Equals("0"))
                         {
@@ -103,7 +106,7 @@ namespace WebApplication2.Pages.Clientes
                                 articulo.Clase = "" + row[0];
                                 articulo.Nombre = "" + row[1];
                                 articulo.Precio = "" + SqlMoney.Parse(row[2].ToString());
-                                TempData["ID"] = "" + row[3];
+                                idArticulo = int.Parse("" + row[3]);
                             }
 
                         }
@@ -124,47 +127,88 @@ namespace WebApplication2.Pages.Clientes
 
         public void OnPost()
         {
-
             articulo.Codigo = Request.Form["Codigo"];
             articulo.Nombre = Request.Form["Nombre"];
             articulo.Clase = Request.Form["ClaseSeleccionada"];
-            clase = Request.Form["ClaseSeleccionada"];
             articulo.Precio = Request.Form["Precio"];
-            Console.WriteLine("Lo que sea " + clase);
-
-            if (articulo.Codigo.Length == 0 || articulo.Nombre.Length == 0 || articulo.Clase.Length == 0 || articulo.Precio.Length == 0)
-            {
-                errorMessage = "Todos los datos son requeridos.";
-                return;
-            }
-            //Guardar el nuevo cliente
-            //Comprobar el formato. 
-
-            /*//Comprobar que el nombre solo contenga letras o guines
-            if (!articulo.Nombre.All(c => (Char.IsLetter(c) || c == '-')))
-            {
-                errorMessage = "El nombre solo puede contener letras o guines";
-                return;
-            }
-            //Comprobar que el precio solo contenga numeros o comas
-            if (!clienteInfo.Precio.All(c => (c >= '0' && c <= '9') || c == ','))
-            {
-                errorMessage = "El precio solo puede tener valores numéricos o coma";
-                return;
-            }*/
+            idArticulo = int.Parse(Request.Form["idArticulo"]);
 
             try
             {
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
-                string spName = "dbo.ModificarArticulo";
+                
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
+                    
                     connection.Open();
+
+                    String SPNombre = "dbo.ListaClaseArticulos";
+                    using (SqlCommand command = new SqlCommand(SPNombre, connection))
+                    {
+                        //Variables para obtener el DataSet mandados de la BD.
+                        SqlDataAdapter adapter = new SqlDataAdapter();
+                        DataTable table = new DataTable();
+
+                        command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
+                                                                            //Codigo para que detecte el output del SP.
+                        SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
+                        resultCodeParam.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(resultCodeParam);
+
+                        //Porceso de obtener el DataSet.
+                        adapter.SelectCommand = command;
+                        DataSet dataSet = new DataSet();
+                        adapter.Fill(dataSet);
+
+                        //Si el output de errores por DataSet es 0 (No hay problemas).
+                        if (dataSet.Tables[0].Rows[0][0].ToString().Equals("0"))
+                        {
+
+                            foreach (DataRow row in dataSet.Tables[1].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
+                            {
+                                ClaseArticulo claseArticulo = new ClaseArticulo();
+
+                                claseArticulo.Nombre = "" + row[0];
+
+                                listaClaseArticulos.Add(claseArticulo);             //A?adir cada fila al array para su visualizacion.
+                            }
+                            
+
+                        }
+                        else
+                        {
+                            //En caso de que haya algun error al cargar la tabla de articulos.
+                            errorMessage = "Error al cargar la lista de articulos.";
+                            return;
+                        }
+                    }
+
+                    if (articulo.Codigo.Length == 0 || articulo.Nombre.Length == 0 || articulo.Clase.Length == 0 || articulo.Precio.Length == 0)
+                    {
+                        errorMessage = "Todos los datos son requeridos.";
+                        return;
+                    }
+                    //Comprobar el formato
+
+                    //Comprobar que el nombre solo contenga letras o guines
+                    if (!articulo.Nombre.All(c => (Char.IsLetter(c) || c == '-')))
+                    {
+                        errorMessage = "El nombre solo puede contener letras o guines";
+                        return;
+                    }
+                    //Comprobar que el precio solo contenga numeros o comas
+                    if (!articulo.Precio.All(c => (c >= '0' && c <= '9') || c == ','))
+                    {
+                        errorMessage = "El precio solo puede tener valores numéricos o coma";
+                        return;
+                    }
+
+                    string spName = "dbo.ModificarArticulo";
                     using (SqlCommand command = new SqlCommand(spName, connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
                        
-                        command.Parameters.AddWithValue("@inID", int.Parse(TempData["ID"] as string));
+                        command.Parameters.AddWithValue("@inID", idArticulo);
                         command.Parameters.AddWithValue("@inClase", articulo.Clase);
                         command.Parameters.AddWithValue("@inCodigo", articulo.Codigo);
                         command.Parameters.AddWithValue("@inNombre", articulo.Nombre);
@@ -178,10 +222,17 @@ namespace WebApplication2.Pages.Clientes
                         int resultCode = (int)command.Parameters["@outResultCode"].Value;
                         if (resultCode == 50001) //codigo generado en el SP que dice si ya un nombre del articulo existe o no
                         {
-                            errorMessage = "El articulo no existe";
+                            errorMessage = "No puede actualizar nombre de articulo con un nombre ya existente";
+                            return;
+                        }
+                        if (resultCode == 50002) //codigo generado en el SP que dice si ya un nombre del articulo existe o no
+                        {   
+                            errorMessage = "No puede actualizar código de articulo con un código ya existente";
                             return;
                         }
                     }
+
+                    
                 }
 
             }
