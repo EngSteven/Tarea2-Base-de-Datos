@@ -25,6 +25,19 @@ namespace WebApplication2.Pages.Clientes
             }
             //Comprobar el formato. 
 
+            //Comprobar que el nombre solo contenga letras o guines
+            /*if (!clienteInfo.Nombre.All(c => (Char.IsLetter(c) || c == '-')))
+            {
+                errorMessage = "El nombre solo puede contener letras o guines";
+                return;
+            }
+            //Comprobar que el precio solo contenga numeros o comas
+            if (!clienteInfo.Precio.All(c => (c >= '0' && c <= '9') || c == ','))
+            {
+                errorMessage = "El precio solo puede tener valores num?ricos o coma";
+                return;
+            }*/
+
             try
             {
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
@@ -37,6 +50,9 @@ namespace WebApplication2.Pages.Clientes
                         command.CommandType = CommandType.StoredProcedure;
 
                         command.Parameters.AddWithValue("@inCodigo", articuloInfo.Codigo);
+                        command.Parameters.AddWithValue("@inTipoAccion", '1');
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
@@ -59,7 +75,7 @@ namespace WebApplication2.Pages.Clientes
                 errorMessage = ex.Message;
                 return;
             }
-            //successMessage = "Nuevo articulo añadido correctamente.";
+            //successMessage = "Nuevo articulo a?adido correctamente.";
             TempData["CodigoIngresado"] = articuloInfo.Codigo;
             Response.Redirect("/Clientes/Modificar");
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Net;
 using WebApplication2.Pages.Clientes;
 
 namespace WebApplication2.Pages.Clientes
@@ -127,6 +128,7 @@ namespace WebApplication2.Pages.Clientes
 
         public void OnPost()
         {
+
             articulo.Codigo = Request.Form["Codigo"];
             articulo.Nombre = Request.Form["Nombre"];
             articulo.Clase = Request.Form["ClaseSeleccionada"];
@@ -213,6 +215,8 @@ namespace WebApplication2.Pages.Clientes
                         command.Parameters.AddWithValue("@inCodigo", articulo.Codigo);
                         command.Parameters.AddWithValue("@inNombre", articulo.Nombre);
                         command.Parameters.AddWithValue("@inPrecio", SqlMoney.Parse(articulo.Precio));
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
@@ -246,9 +250,7 @@ namespace WebApplication2.Pages.Clientes
             articulo.Nombre = "";
             articulo.Precio = "";
             successMessage = "Articulo modificado correctamente.";
-
-            //Response.Redirect("/Exito");
-
+            Response.Redirect("/Pricipal");
         }
     }
 }

@@ -100,6 +100,8 @@ namespace WebApplication2.Pages.Clientes
                         Console.WriteLine(codigoBorrar + "--");
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                         command.Parameters.AddWithValue("@inCodigo", codigoBorrar);
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
 
                         //Codigo para que detecte el output del SP.
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
@@ -112,10 +114,9 @@ namespace WebApplication2.Pages.Clientes
 
                         if (resultCode != 50001)
                         {
-
                             Console.WriteLine("Borrado adecuado");
                             successMessage = "Borrado correctamente";
-
+                            Response.Redirect("/Pricipal");
                         }
                         else
                         {
@@ -130,6 +131,50 @@ namespace WebApplication2.Pages.Clientes
             {
                 Console.WriteLine("Exception: " + ex.ToString());
             }
+
+        }
+
+        public async Task OnPostConfirmar()
+        {
+            try
+            {
+                codigoBorrar = Request.Form["Codigo1"];
+                String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
+                string spName = "dbo.ValidarCodigoArticulo";
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(spName, connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@inCodigo", codigoBorrar);
+                        command.Parameters.AddWithValue("@inTipoAccion", '3');
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
+                        SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
+                        resultCodeParam.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(resultCodeParam);
+
+                        command.ExecuteNonQuery();
+
+                        int resultCode = (int)command.Parameters["@outResultCode"].Value;
+
+                        if (resultCode == 50001) //codigo generado en el SP que dice si ya un nombre del articulo existe o no
+                        {
+                            errorMessage = "El codigo del articulo no existe";
+                            return;
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return;
+            }
+            Response.Redirect("/Pricipal");
         }
     }
 }

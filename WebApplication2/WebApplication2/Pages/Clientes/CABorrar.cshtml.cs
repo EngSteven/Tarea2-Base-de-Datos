@@ -31,7 +31,7 @@ namespace WebApplication2.Pages.Clientes
             //Comprobar que el precio solo contenga numeros o comas
             if (!clienteInfo.Precio.All(c => (c >= '0' && c <= '9') || c == ','))
             {
-                errorMessage = "El precio solo puede tener valores numéricos o coma";
+                errorMessage = "El precio solo puede tener valores num?ricos o coma";
                 return;
             }*/
 
@@ -47,6 +47,9 @@ namespace WebApplication2.Pages.Clientes
                         command.CommandType = CommandType.StoredProcedure;
 
                         command.Parameters.AddWithValue("@inCodigo", articuloInfo.Codigo);
+                        command.Parameters.AddWithValue("@inTipoAccion", '2');
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
@@ -69,7 +72,7 @@ namespace WebApplication2.Pages.Clientes
                 errorMessage = ex.Message;
                 return;
             }
-            //successMessage = "Nuevo articulo añadido correctamente.";
+            //successMessage = "Nuevo articulo a?adido correctamente.";
             TempData["CodigoIngresado"] = articuloInfo.Codigo;
             Response.Redirect("/Clientes/Borrar");
 

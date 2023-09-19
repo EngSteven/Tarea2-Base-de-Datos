@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Data;
+using System.Net;
 
 namespace WebApplication2.Pages.Clientes
 {
@@ -13,7 +14,7 @@ namespace WebApplication2.Pages.Clientes
         public String errorMessage = "";                                    //Variable para los mensajes de error
         public String successMessage = "";
         public ArticuloInfo articulo = new ArticuloInfo();
-
+        
         public void OnGet(string claseSeleccionada)
         {
             try
@@ -73,12 +74,10 @@ namespace WebApplication2.Pages.Clientes
 
         public void OnPost()
         {
-
             articulo.Codigo = Request.Form["Codigo"];
             articulo.Nombre = Request.Form["Nombre"];
             articulo.Clase = Request.Form["ClaseSeleccionada"];
             articulo.Precio = Request.Form["Precio"];
-
 
             try
             {
@@ -149,6 +148,7 @@ namespace WebApplication2.Pages.Clientes
                         return;
                     }
 
+                    //INSERTAR EL ARTICULO
                     string spName = "dbo.InsertarArticulo";
                     using (SqlCommand command = new SqlCommand(spName, connection))
                     {
@@ -158,6 +158,8 @@ namespace WebApplication2.Pages.Clientes
                         command.Parameters.AddWithValue("@inCodigo", articulo.Codigo);
                         command.Parameters.AddWithValue("@inNombre", articulo.Nombre);
                         command.Parameters.AddWithValue("@inPrecio", SqlMoney.Parse(articulo.Precio));
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
@@ -190,8 +192,7 @@ namespace WebApplication2.Pages.Clientes
             articulo.Nombre = "";
             articulo.Precio = "";
             successMessage = "Articulo agregado correctamente.";
-
-            //Response.Redirect("/Exito");
+            Response.Redirect("/Exito");
 
         }
 

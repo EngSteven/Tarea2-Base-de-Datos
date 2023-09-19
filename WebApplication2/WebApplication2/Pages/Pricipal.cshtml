@@ -32,20 +32,12 @@
 <form asp-page-handler="Cantidad" method="post">
     <div class="row mb-3">
         <div class="col-sm-3">
-            <input type="text" class="form-control" name="Cantidad" value="@Model.cantidad" />
+            <input type="number" class="form-control" name="Cantidad" value="@Model.cantidad" />
         </div>
 
         <div class="offset-sm-6 col-sm-3 d-grid">
             <button id="btnCant" class="btn btn-primary">Filtrar X Cantidad</button>
         </div>
-        @if (@Model.cantidad == "")
-        {
-            <button disabled="disabled" id="btnCant" class="btn btn-primary">Filtrar X Cantidad</button>
-        }
-        else
-        {
-            <button id="btnCant" class="btn btn-primary">Filtrar X Cantidad</button>
-        }
 
     </div>
 </form>
