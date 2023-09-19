@@ -24,15 +24,63 @@ namespace WebApplication2.Pages
 
         public void OnGet()
         {
-            Response.Redirect("/Pricipal");
+            IPHostEntry host;
+            String localIP = "";
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            Global.IP = host.AddressList[0].ToString();
+            if (!Global.sesion.Equals("")) { 
+                    LogOut();
+               } 
+           // Global.sesion = "LPerez";
+            Global.sesion = "";
+            //Response.Redirect("/Pricipal");
+        }
+
+        public void LogOut() {
+            try
+            {
+                String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();                                      //Se abre la coneccion con la BD.
+                    using (SqlCommand command = new SqlCommand("dbo.LogOut", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
+
+                        SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
+                        resultCodeParam.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(resultCodeParam);
+
+                        command.ExecuteNonQuery();
+
+                        int resultCode = (int)command.Parameters["@outResultCode"].Value;
+
+                        if (resultCode == 50001) //codigo generado en el SP que dice si ya un nombre del articulo existe o no
+                        {
+                            errorMessage = "Combinacion Usuario/Contraseña no encontrado.";
+                            return;
+                        }
+                        else
+                        {
+                            Global.sesion = usuarioInfo.Usuario;
+                            Response.Redirect("/Pricipal");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.ToString());
+            }
         }
         public void OnPost() {
             //Response.Redirect("/Pricipal");
             //return;
-            IPHostEntry host;
-            String localIP = "";
-            host = Dns.GetHostEntry(Dns.GetHostName());
-            localIP = host.AddressList[0].ToString();
+
             usuarioInfo.Usuario = Request.Form["Usuario"];
             usuarioInfo.Clave = Request.Form["Clave"];
 
@@ -55,7 +103,7 @@ namespace WebApplication2.Pages
 
                         command.Parameters.AddWithValue("@inUsuario", usuarioInfo.Usuario);
                         command.Parameters.AddWithValue("@inClave", usuarioInfo.Clave);
-                        command.Parameters.AddWithValue("@inIP", localIP);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
 
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
@@ -71,6 +119,7 @@ namespace WebApplication2.Pages
                             return;
                         }
                         else {
+                            Global.sesion = usuarioInfo.Usuario;
                             Response.Redirect("/Pricipal");
                         }
                     }
