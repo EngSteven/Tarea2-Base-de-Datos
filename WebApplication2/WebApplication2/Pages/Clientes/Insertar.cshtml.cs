@@ -14,12 +14,12 @@ namespace WebApplication2.Pages.Clientes
         public String errorMessage = "";                                    //Variable para los mensajes de error
         public String successMessage = "";
         public ArticuloInfo articulo = new ArticuloInfo();
-        
+
         public void OnGet(string claseSeleccionada)
         {
             try
             {
-               
+
                 String SPNombre = "dbo.ListaClaseArticulos";
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
 
@@ -34,6 +34,9 @@ namespace WebApplication2.Pages.Clientes
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                                                                             //Codigo para que detecte el output del SP.
+
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
@@ -82,7 +85,7 @@ namespace WebApplication2.Pages.Clientes
             try
             {
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
-  
+
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -96,6 +99,9 @@ namespace WebApplication2.Pages.Clientes
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                                                                             //Codigo para que detecte el output del SP.
+
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);

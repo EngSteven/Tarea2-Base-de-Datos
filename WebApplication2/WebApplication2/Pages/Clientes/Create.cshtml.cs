@@ -87,8 +87,7 @@ namespace WebApplication2.Pages.Clientes
             successMessage = "Nuevo articulo añadido correctamente.";
 
             Response.Redirect("/Exito");
-
+        
         }
-
     }
 }

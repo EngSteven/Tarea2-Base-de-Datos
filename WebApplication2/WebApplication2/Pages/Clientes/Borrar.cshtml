@@ -73,15 +73,14 @@
     </div>
 </form>
 
-<form asp-page-handler="Confirmar" method="post">
-    <div class="col-sm">
-        <div class="d-grid">
-            <button class="btn btn-outline-primary" name="NoComfirmar" role="button">Cancel</button>
+<form asp-page-handler="Confirmar" method="post">  
+        <div class="col-sm">
+            <div class="d-grid">
+                <button class="btn btn-outline-primary" name="NoComfirmar" role="button">Cancel</button>
+            </div>
         </div>
-
-        <div class="col-sm-6">
-            <input type="text" class="form-control" name="Codigo1" value="@Model.articulo.Codigo" hidden />
-        </div>
-
+    <div class="col-sm-6">
+        <input type="text" class="form-control" name="Codigo1" value="@Model.articulo.Codigo" hidden />
     </div>
 </form>
+

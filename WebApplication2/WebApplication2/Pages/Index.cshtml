@@ -10,10 +10,10 @@
 </center>
 @if (Model.errorMessage.Length > 0)
 {
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>@Model.errorMessage</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>@Model.errorMessage</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
 }
 
 <form method="POST">
@@ -33,14 +33,14 @@
 
     @if (Model.successMessage.Length > 0)
     {
-        <div class="row mb-3">
-            <div class="col-sm-9">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>@Model.successMessage</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="row mb-3">
+                <div class="col-sm-9">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>@Model.successMessage</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 </div>
             </div>
-        </div>
     }
 
     <div class="row mb-3">
@@ -49,3 +49,4 @@
         </div>
     </div>
 </form>
+

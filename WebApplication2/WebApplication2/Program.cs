@@ -21,8 +21,7 @@ app.MapRazorPages();
 app.Run();
 
 
-public static class Global
-{
+public static class Global {
     public static String sesion = "";
-    public static String IP = "";
+    public static String IP = ""; 
 }

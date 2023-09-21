@@ -1,4 +1,4 @@
-ï»¿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data;
 using System.Data.SqlClient;
@@ -49,10 +49,13 @@ namespace WebApplication2.Pages
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                                                                             //Codigo para que detecte el output del SP.
                                                                             //command.Parameters.AddWithValue("@inCantidad", cantidad);
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
+
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
-                        command.ExecuteNonQuery();
+                        //command.ExecuteNonQuery();
                         //Porceso de obtener el DataSet.
                         adapter.SelectCommand = command;
                         DataSet dataSet = new DataSet();
@@ -69,7 +72,7 @@ namespace WebApplication2.Pages
                                 articuloInfo.Clase = "" + row[2];
                                 articuloInfo.Precio = "" + SqlMoney.Parse(row[3].ToString());
 
-                                listaArticulos.Add(articuloInfo);             //Aï¿½adir cada fila al array para su visualizacion.
+                                listaArticulos.Add(articuloInfo);             //Añadir cada fila al array para su visualizacion.
                             }
                             foreach (DataRow row in dataSet.Tables[2].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
                             {
@@ -96,8 +99,7 @@ namespace WebApplication2.Pages
         }
 
 
-        public async Task OnPostCantidad()
-        {
+        public async Task OnPostCantidad() {
 
             try
             {
@@ -124,12 +126,12 @@ namespace WebApplication2.Pages
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                                                                             //Codigo para que detecte el output del SP.
-                        if (cantidad.All(c => (c >= '0' && c <= '9')) && cantidad != "")
-                        {
+                        if (cantidad.All(c => (c >= '0' && c <= '9')) && cantidad != "") {
                             command.Parameters.AddWithValue("@inCantidad", SqlInt16.Parse(cantidad));
-                            command.Parameters.AddWithValue("@inUsuario", Global.sesion);
-                            command.Parameters.AddWithValue("@inIP", Global.IP);
                         }
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
+
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
@@ -153,7 +155,7 @@ namespace WebApplication2.Pages
                                 articuloInfo.Clase = "" + row[2];
                                 articuloInfo.Precio = "" + SqlMoney.Parse(row[3].ToString());
 
-                                listaArticulos.Add(articuloInfo);             //Aï¿½adir cada fila al array para su visualizacion.
+                                listaArticulos.Add(articuloInfo);             //Añadir cada fila al array para su visualizacion.
                             }
                             foreach (DataRow row in dataSet.Tables[2].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
                             {
@@ -189,8 +191,7 @@ namespace WebApplication2.Pages
                 {
                     spName = "dbo.ListaArticulos";
                 }
-                else
-                {
+                else {
                     spName = "dbo.FiltrarNombre";
                 }
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
@@ -206,12 +207,11 @@ namespace WebApplication2.Pages
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                                                                             //Codigo para que detecte el output del SP.
-                        if (!nombre.Equals(""))
-                        {
+                        if (!nombre.Equals("")) {
                             command.Parameters.AddWithValue("@inNombre", nombre);
-                            command.Parameters.AddWithValue("@inUsuario", Global.sesion);
-                            command.Parameters.AddWithValue("@inIP", Global.IP);
                         }
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
@@ -235,7 +235,7 @@ namespace WebApplication2.Pages
                                 articuloInfo.Clase = "" + row[2];
                                 articuloInfo.Precio = "" + SqlMoney.Parse(row[3].ToString());
 
-                                listaArticulos.Add(articuloInfo);             //Aï¿½adir cada fila al array para su visualizacion.
+                                listaArticulos.Add(articuloInfo);             //Añadir cada fila al array para su visualizacion.
                             }
                             foreach (DataRow row in dataSet.Tables[2].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
                             {

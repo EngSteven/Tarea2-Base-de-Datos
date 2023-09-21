@@ -10,7 +10,7 @@ namespace WebApplication2.Pages.Clientes
 {
     public class ModificarModel : PageModel
     {
-        
+
         public List<ClaseArticulo> listaClaseArticulos = new List<ClaseArticulo>();
         public String codigoIngresado = "";
         public String errorMessage = "";                                    //Variable para los mensajes de error
@@ -39,6 +39,10 @@ namespace WebApplication2.Pages.Clientes
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                                                                             //Codigo para que detecte el output del SP.
+
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
+
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
@@ -55,7 +59,7 @@ namespace WebApplication2.Pages.Clientes
                             foreach (DataRow row in dataSet.Tables[1].Rows) //Recorra cada fila de la tabla con los datos y estraigala en el tipo ClienteInfo.
                             {
                                 ClaseArticulo claseArticulo = new ClaseArticulo();
-                                
+
                                 claseArticulo.Nombre = "" + row[0];
 
                                 listaClaseArticulos.Add(claseArticulo);             //A?adir cada fila al array para su visualizacion.
@@ -81,6 +85,8 @@ namespace WebApplication2.Pages.Clientes
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                         command.Parameters.AddWithValue("@inCodigo", codigoIngresado);
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
 
                         //Codigo para que detecte el output del SP.
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
@@ -138,10 +144,10 @@ namespace WebApplication2.Pages.Clientes
             try
             {
                 String connectionString = "Data Source=project0-server.database.windows.net;Initial Catalog=project0-database;Persist Security Info=True;User ID=stevensql;Password=Killua36911-";
-                
+
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    
+
                     connection.Open();
 
                     String SPNombre = "dbo.ListaClaseArticulos";
@@ -153,6 +159,8 @@ namespace WebApplication2.Pages.Clientes
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                                                                             //Codigo para que detecte el output del SP.
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
@@ -174,7 +182,7 @@ namespace WebApplication2.Pages.Clientes
 
                                 listaClaseArticulos.Add(claseArticulo);             //A?adir cada fila al array para su visualizacion.
                             }
-                            
+
 
                         }
                         else
@@ -209,7 +217,7 @@ namespace WebApplication2.Pages.Clientes
                     using (SqlCommand command = new SqlCommand(spName, connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                       
+
                         command.Parameters.AddWithValue("@inID", idArticulo);
                         command.Parameters.AddWithValue("@inClase", articulo.Clase);
                         command.Parameters.AddWithValue("@inCodigo", articulo.Codigo);
@@ -230,13 +238,13 @@ namespace WebApplication2.Pages.Clientes
                             return;
                         }
                         if (resultCode == 50002) //codigo generado en el SP que dice si ya un nombre del articulo existe o no
-                        {   
+                        {
                             errorMessage = "No puede actualizar código de articulo con un código ya existente";
                             return;
                         }
                     }
 
-                    
+
                 }
 
             }
@@ -250,7 +258,7 @@ namespace WebApplication2.Pages.Clientes
             articulo.Nombre = "";
             articulo.Precio = "";
             successMessage = "Articulo modificado correctamente.";
-            Response.Redirect("/Pricipal");
+            Response.Redirect("/Exito");
         }
     }
 }

@@ -37,7 +37,8 @@ namespace WebApplication2.Pages.Clientes
 
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                         command.Parameters.AddWithValue("@inCodigo", codigoIngresado);
-
+                        command.Parameters.AddWithValue("@inUsuario", Global.sesion);
+                        command.Parameters.AddWithValue("@inIP", Global.IP);
                         //Codigo para que detecte el output del SP.
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
@@ -78,8 +79,7 @@ namespace WebApplication2.Pages.Clientes
             }
         }
 
-        public void OnPost()
-        {
+        public void OnPost() {
             try
             {
                 codigoBorrar = Request.Form["Codigo1"];
@@ -97,7 +97,6 @@ namespace WebApplication2.Pages.Clientes
                         SqlDataAdapter adapter = new SqlDataAdapter();
                         DataTable table = new DataTable();
 
-                        Console.WriteLine(codigoBorrar + "--");
                         command.CommandType = CommandType.StoredProcedure;  //Indicar que el comando sera un SP.
                         command.Parameters.AddWithValue("@inCodigo", codigoBorrar);
                         command.Parameters.AddWithValue("@inUsuario", Global.sesion);
@@ -116,7 +115,7 @@ namespace WebApplication2.Pages.Clientes
                         {
                             Console.WriteLine("Borrado adecuado");
                             successMessage = "Borrado correctamente";
-                            Response.Redirect("/Pricipal");
+                            Response.Redirect("/Exito");
                         }
                         else
                         {
@@ -131,7 +130,7 @@ namespace WebApplication2.Pages.Clientes
             {
                 Console.WriteLine("Exception: " + ex.ToString());
             }
-
+            
         }
 
         public async Task OnPostConfirmar()

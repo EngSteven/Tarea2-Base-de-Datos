@@ -31,7 +31,7 @@ namespace WebApplication2.Pages.Clientes
             //Comprobar que el precio solo contenga numeros o comas
             if (!clienteInfo.Precio.All(c => (c >= '0' && c <= '9') || c == ','))
             {
-                errorMessage = "El precio solo puede tener valores num?ricos o coma";
+                errorMessage = "El precio solo puede tener valores numéricos o coma";
                 return;
             }*/
 
@@ -72,7 +72,7 @@ namespace WebApplication2.Pages.Clientes
                 errorMessage = ex.Message;
                 return;
             }
-            //successMessage = "Nuevo articulo a?adido correctamente.";
+            //successMessage = "Nuevo articulo añadido correctamente.";
             TempData["CodigoIngresado"] = articuloInfo.Codigo;
             Response.Redirect("/Clientes/Borrar");
 
