@@ -92,7 +92,7 @@ namespace WebApplication2.Pages.Clientes
                         SqlParameter resultCodeParam = new SqlParameter("@outResultCode", SqlDbType.Int);
                         resultCodeParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(resultCodeParam);
-                        command.ExecuteNonQuery();
+                        //command.ExecuteNonQuery();
 
 
                         //Porceso de obtener el DataSet.

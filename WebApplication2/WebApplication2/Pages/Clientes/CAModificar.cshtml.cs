@@ -23,20 +23,6 @@ namespace WebApplication2.Pages.Clientes
                 errorMessage = "Todos los datos son requeridos.";
                 return;
             }
-            //Comprobar el formato. 
-
-            //Comprobar que el nombre solo contenga letras o guines
-            /*if (!clienteInfo.Nombre.All(c => (Char.IsLetter(c) || c == '-')))
-            {
-                errorMessage = "El nombre solo puede contener letras o guines";
-                return;
-            }
-            //Comprobar que el precio solo contenga numeros o comas
-            if (!clienteInfo.Precio.All(c => (c >= '0' && c <= '9') || c == ','))
-            {
-                errorMessage = "El precio solo puede tener valores numéricos o coma";
-                return;
-            }*/
 
             try
             {
